@@ -55,9 +55,11 @@ class _HeartRateChartState extends State<HeartRateChart> {
             _baseOffset = _viewport.panOffsetX;
           },
           onScaleUpdate: (details) {
-            final newScale = (_baseScale * details.horizontalScale).clamp(1.0, 5.0);
+            final newScale =
+                (_baseScale * details.horizontalScale).clamp(1.0, 5.0);
             final maxPan = (newScale - 1.0) * constraints.maxWidth;
-            final newPan = (_baseOffset + details.focalPointDelta.dx).clamp(-maxPan, 0.0);
+            final newPan =
+                (_baseOffset + details.focalPointDelta.dx).clamp(-maxPan, 0.0);
 
             setState(() {
               _viewport = _viewport.copyWith(
@@ -75,7 +77,8 @@ class _HeartRateChartState extends State<HeartRateChart> {
               _viewport,
             );
             setState(() {
-              _viewport = _viewport.copyWith(selectedTimestamp: nearest?.timestamp);
+              _viewport =
+                  _viewport.copyWith(selectedTimestamp: nearest?.timestamp);
             });
           },
           onTapUp: (_) {
@@ -150,8 +153,7 @@ class HeartRateCustomPainter extends CustomPainter {
     ..strokeCap = StrokeCap.round
     ..strokeJoin = StrokeJoin.round;
 
-  static final Paint _fillPaint = Paint()
-    ..style = PaintingStyle.fill;
+  static final Paint _fillPaint = Paint()..style = PaintingStyle.fill;
 
   static final Paint _gridPaint = Paint()
     ..color = const Color(0x1FFFFFFF)
@@ -224,7 +226,8 @@ class HeartRateCustomPainter extends CustomPainter {
 
     // Map first point
     double prevX = viewport.panOffsetX;
-    double prevY = topPadding + chartHeight * (1.0 - (records.first.bpm - minBpm) / bpmRange);
+    double prevY = topPadding +
+        chartHeight * (1.0 - (records.first.bpm - minBpm) / bpmRange);
 
     _linePath.moveTo(prevX, prevY);
     _fillPath.moveTo(prevX, height - bottomPadding);
@@ -238,7 +241,8 @@ class HeartRateCustomPainter extends CustomPainter {
       final r = records[i];
       final double normalizedX = (r.timestamp - minTs) / tsRange;
       final double x = (normalizedX * contentWidth) + viewport.panOffsetX;
-      final double y = topPadding + chartHeight * (1.0 - (r.bpm - minBpm) / bpmRange);
+      final double y =
+          topPadding + chartHeight * (1.0 - (r.bpm - minBpm) / bpmRange);
 
       _linePath.lineTo(x, y);
       _fillPath.lineTo(x, y);
@@ -285,8 +289,8 @@ class HeartRateCustomPainter extends CustomPainter {
       canvas.drawCircle(Offset(selectedX, selectedY), 5.0, _pointPaint);
 
       // Tooltip Box
-      final timeStr = DateFormat('HH:mm:ss')
-          .format(DateTime.fromMillisecondsSinceEpoch(selectedRecord.timestamp));
+      final timeStr = DateFormat('HH:mm:ss').format(
+          DateTime.fromMillisecondsSinceEpoch(selectedRecord.timestamp));
       final textSpan = TextSpan(
         text: '${selectedRecord.bpm} BPM\n$timeStr',
         style: const TextStyle(
@@ -306,7 +310,8 @@ class HeartRateCustomPainter extends CustomPainter {
       final tooltipWidth = textPainter.width + pad * 2;
       final tooltipHeight = textPainter.height + pad * 2;
 
-      double boxX = (selectedX - tooltipWidth / 2).clamp(4.0, width - tooltipWidth - 4.0);
+      double boxX =
+          (selectedX - tooltipWidth / 2).clamp(4.0, width - tooltipWidth - 4.0);
       double boxY = max(4.0, selectedY - tooltipHeight - 10.0);
 
       final rrect = RRect.fromRectAndRadius(

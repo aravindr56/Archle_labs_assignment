@@ -13,13 +13,15 @@ class SimHealthSource implements HealthDataSource {
   final _stepsController = StreamController<StepRecord>.broadcast();
   final _hrController = StreamController<HeartRateRecord>.broadcast();
   Timer? _timer;
-  final Random _rnd = Random(42); // Seeded for deterministic test reproducibility
+  final Random _rnd =
+      Random(42); // Seeded for deterministic test reproducibility
   int _tickCount = 0;
   bool _isRunning = false;
 
   SimHealthSource() {
     if (kReleaseMode) {
-      throw UnsupportedError('SimSource is strictly disabled in release builds.');
+      throw UnsupportedError(
+          'SimSource is strictly disabled in release builds.');
     }
   }
 
@@ -40,7 +42,8 @@ class SimHealthSource implements HealthDataSource {
   }
 
   @override
-  Future<void> startListening({Duration cadence = const Duration(seconds: 1)}) async {
+  Future<void> startListening(
+      {Duration cadence = const Duration(seconds: 1)}) async {
     if (kReleaseMode) return;
     if (_isRunning) return;
     _isRunning = true;

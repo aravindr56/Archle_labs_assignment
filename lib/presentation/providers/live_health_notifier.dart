@@ -123,7 +123,8 @@ class LiveHealthNotifier extends StateNotifier<DashboardState> {
     _pendingSteps.clear();
 
     // Filter to window
-    final windowedSteps = updatedSteps.where((s) => s.timestamp >= cutoff).toList();
+    final windowedSteps =
+        updatedSteps.where((s) => s.timestamp >= cutoff).toList();
 
     // Merge heart rates
     HeartRateRecord? latestHr = state.latestHeartRate;

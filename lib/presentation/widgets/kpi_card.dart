@@ -123,10 +123,12 @@ class _HeartRateKpiCardState extends State<HeartRateKpiCard>
       duration: const Duration(milliseconds: 900),
     );
 
-    final isTest = WidgetsBinding.instance.runtimeType.toString().contains('Test');
+    final isTest =
+        WidgetsBinding.instance.runtimeType.toString().contains('Test');
     if (!isTest) {
       _animController.repeat(reverse: true);
-      _ageTimer = Timer.periodic(const Duration(seconds: 1), (_) => _updateAge());
+      _ageTimer =
+          Timer.periodic(const Duration(seconds: 1), (_) => _updateAge());
     } else {
       _animController.value = 1.0;
     }
@@ -227,7 +229,8 @@ class _HeartRateKpiCardState extends State<HeartRateKpiCard>
                   ],
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.06),
                     borderRadius: BorderRadius.circular(6),
@@ -235,12 +238,14 @@ class _HeartRateKpiCardState extends State<HeartRateKpiCard>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.access_time_rounded, size: 12, color: Colors.white38),
+                      const Icon(Icons.access_time_rounded,
+                          size: 12, color: Colors.white38),
                       const SizedBox(width: 4),
                       Text(
                         _ageString,
                         key: const Key('hr_timestamp_age'),
-                        style: const TextStyle(fontSize: 11, color: Colors.white70),
+                        style: const TextStyle(
+                            fontSize: 11, color: Colors.white70),
                       ),
                     ],
                   ),

@@ -138,7 +138,8 @@ class DatabaseService {
 
   Future<int> getTodayStepTotal({DateTime? now}) async {
     final targetDate = now ?? DateTime.now();
-    final startOfDay = DateTime(targetDate.year, targetDate.month, targetDate.day);
+    final startOfDay =
+        DateTime(targetDate.year, targetDate.month, targetDate.day);
     final res = await _db.rawQuery(
       'SELECT SUM(count) as total FROM steps_raw WHERE ts >= ?',
       [startOfDay.millisecondsSinceEpoch],
@@ -166,7 +167,8 @@ class DatabaseService {
   Future<void> computeAndSaveHourlyRollup(DateTime dt) async {
     final dateStr = DateFormat('yyyy-MM-dd').format(dt);
     final hour = dt.hour;
-    final startOfHour = DateTime(dt.year, dt.month, dt.day, hour).millisecondsSinceEpoch;
+    final startOfHour =
+        DateTime(dt.year, dt.month, dt.day, hour).millisecondsSinceEpoch;
     final endOfHour = startOfHour + (3600 * 1000) - 1;
 
     // Steps sum
@@ -212,9 +214,11 @@ class DatabaseService {
     );
   }
 
-  Future<void> computeAndSaveDailyRollup(DateTime dt, {int stepTarget = 8000}) async {
+  Future<void> computeAndSaveDailyRollup(DateTime dt,
+      {int stepTarget = 8000}) async {
     final dateStr = DateFormat('yyyy-MM-dd').format(dt);
-    final startOfDay = DateTime(dt.year, dt.month, dt.day).millisecondsSinceEpoch;
+    final startOfDay =
+        DateTime(dt.year, dt.month, dt.day).millisecondsSinceEpoch;
     final endOfDay = startOfDay + (86400 * 1000) - 1;
 
     final stepsRes = await _db.rawQuery(
@@ -230,17 +234,19 @@ class DatabaseService {
       'SELECT COUNT(DISTINCT ts / 60000) as zone2_mins FROM hr_raw WHERE ts >= ? AND ts <= ? AND bpm >= 100 AND bpm <= 140',
       [startOfDay, endOfDay],
     );
-    final zone2Mins = zone2Res.isNotEmpty && zone2Res.first['zone2_mins'] != null
-        ? (zone2Res.first['zone2_mins'] as num).toInt()
-        : 0;
+    final zone2Mins =
+        zone2Res.isNotEmpty && zone2Res.first['zone2_mins'] != null
+            ? (zone2Res.first['zone2_mins'] as num).toInt()
+            : 0;
 
     final activeRes = await _db.rawQuery(
       'SELECT COUNT(DISTINCT ts / 60000) as active_mins FROM steps_raw WHERE ts >= ? AND ts <= ? AND count >= 30',
       [startOfDay, endOfDay],
     );
-    final activeMins = activeRes.isNotEmpty && activeRes.first['active_mins'] != null
-        ? (activeRes.first['active_mins'] as num).toInt()
-        : 0;
+    final activeMins =
+        activeRes.isNotEmpty && activeRes.first['active_mins'] != null
+            ? (activeRes.first['active_mins'] as num).toInt()
+            : 0;
 
     final agg = DailyAggregate(
       date: dateStr,
@@ -263,9 +269,8 @@ class DatabaseService {
     final refTime = now ?? DateTime.now();
 
     // 7 days raw retention
-    final sevenDaysAgoMs = refTime
-        .subtract(const Duration(days: 7))
-        .millisecondsSinceEpoch;
+    final sevenDaysAgoMs =
+        refTime.subtract(const Duration(days: 7)).millisecondsSinceEpoch;
 
     final deletedSteps = await _db.delete(
       'steps_raw',
@@ -296,7 +301,8 @@ class DatabaseService {
       whereArgs: [thirtyDaysAgoDate],
     );
 
-    await setKV('last_compaction_ts', refTime.millisecondsSinceEpoch.toString());
+    await setKV(
+        'last_compaction_ts', refTime.millisecondsSinceEpoch.toString());
 
     return {
       'deleted_steps_raw': deletedSteps,

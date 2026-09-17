@@ -35,7 +35,8 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Health Connect Live'), findsOneWidget);
-      expect(find.byKey(const Key('performance_hud_container')), findsOneWidget);
+      expect(
+          find.byKey(const Key('performance_hud_container')), findsOneWidget);
 
       final debugBtn = find.byKey(const Key('debug_menu_button'));
       expect(debugBtn, findsOneWidget);

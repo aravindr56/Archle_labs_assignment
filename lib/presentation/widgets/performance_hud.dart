@@ -63,7 +63,8 @@ class _PerformanceHudState extends State<PerformanceHud> {
 
       // Estimate FPS based on frame interval or total span
       final lastTotal = timings.last.totalSpan.inMilliseconds;
-      final estFps = lastTotal > 0 ? (1000.0 / lastTotal).clamp(10.0, 60.0) : 60.0;
+      final estFps =
+          lastTotal > 0 ? (1000.0 / lastTotal).clamp(10.0, 60.0) : 60.0;
 
       setState(() {
         _avgBuildTime = avg;
@@ -86,7 +87,9 @@ class _PerformanceHudState extends State<PerformanceHud> {
         color: const Color(0xDD12121E),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: isBuildUnderTarget ? const Color(0xFF00E676) : const Color(0xFFFF5252),
+          color: isBuildUnderTarget
+              ? const Color(0xFF00E676)
+              : const Color(0xFFFF5252),
           width: 1.2,
         ),
       ),
@@ -96,7 +99,9 @@ class _PerformanceHudState extends State<PerformanceHud> {
           Icon(
             Icons.speed_rounded,
             size: 16,
-            color: isBuildUnderTarget ? const Color(0xFF00E676) : const Color(0xFFFF5252),
+            color: isBuildUnderTarget
+                ? const Color(0xFF00E676)
+                : const Color(0xFFFF5252),
           ),
           const SizedBox(width: 8),
           Text(

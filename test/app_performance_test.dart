@@ -41,7 +41,8 @@ class MockPerfRepository implements HealthRepository {
   Future<HeartRateRecord?> getLatestHeartRate() async => _hr;
 
   @override
-  Future<List<StepRecord>> getRecentSteps({Duration window = const Duration(minutes: 60)}) async {
+  Future<List<StepRecord>> getRecentSteps(
+      {Duration window = const Duration(minutes: 60)}) async {
     final now = DateTime.now().millisecondsSinceEpoch;
     return List.generate(
       20,
@@ -50,7 +51,8 @@ class MockPerfRepository implements HealthRepository {
   }
 
   @override
-  Future<List<HeartRateRecord>> getRecentHeartRates({Duration window = const Duration(minutes: 60)}) async {
+  Future<List<HeartRateRecord>> getRecentHeartRates(
+      {Duration window = const Duration(minutes: 60)}) async {
     final now = DateTime.now().millisecondsSinceEpoch;
     return List.generate(
       40,
@@ -105,7 +107,8 @@ void main() {
 
       // 1. Verify dashboard elements
       expect(find.text('Health Connect Live'), findsOneWidget);
-      expect(find.byKey(const Key('performance_hud_container')), findsOneWidget);
+      expect(
+          find.byKey(const Key('performance_hud_container')), findsOneWidget);
 
       // 2. Navigate to Debug Screen
       final debugBtn = find.byKey(const Key('debug_menu_button'));

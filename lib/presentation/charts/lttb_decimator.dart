@@ -30,7 +30,8 @@ class LttbDecimator {
       // Calculate point average for next bucket (c)
       double avgX = 0;
       double avgY = 0;
-      final int avgRangeStart = (((i + 1) * every).floor() + 1).clamp(0, dataLen - 1);
+      final int avgRangeStart =
+          (((i + 1) * every).floor() + 1).clamp(0, dataLen - 1);
       final int avgRangeEnd = (((i + 2) * every).floor() + 1).clamp(0, dataLen);
       final int avgRangeLength = max(1, avgRangeEnd - avgRangeStart);
 

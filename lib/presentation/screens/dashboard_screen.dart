@@ -35,7 +35,9 @@ class DashboardScreen extends ConsumerWidget {
             tooltip: 'Permissions',
             icon: Icon(
               Icons.security_rounded,
-              color: permState.isGranted ? const Color(0xFF00E676) : Colors.orangeAccent,
+              color: permState.isGranted
+                  ? const Color(0xFF00E676)
+                  : Colors.orangeAccent,
             ),
             onPressed: () {
               Navigator.of(context).push(
@@ -61,17 +63,20 @@ class DashboardScreen extends ConsumerWidget {
           children: [
             // Floating Performance HUD
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (dashboard.isSimSourceActive)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.amber.shade900.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.amber.shade600, width: 1),
+                        border:
+                            Border.all(color: Colors.amber.shade600, width: 1),
                       ),
                       child: const Row(
                         children: [
@@ -99,7 +104,8 @@ class DashboardScreen extends ConsumerWidget {
             if (isDenied && !dashboard.isSimSourceActive)
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.amber.shade900.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(10),
@@ -107,7 +113,8 @@ class DashboardScreen extends ConsumerWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline, color: Colors.amberAccent, size: 20),
+                    const Icon(Icons.info_outline,
+                        color: Colors.amberAccent, size: 20),
                     const SizedBox(width: 10),
                     const Expanded(
                       child: Text(
@@ -118,7 +125,8 @@ class DashboardScreen extends ConsumerWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const PermissionsScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const PermissionsScreen()),
                         );
                       },
                       child: const Text('GRANT'),
@@ -169,7 +177,8 @@ class DashboardScreen extends ConsumerWidget {
                               children: [
                                 const Row(
                                   children: [
-                                    Icon(Icons.bar_chart_rounded, color: Color(0xFF00E676)),
+                                    Icon(Icons.bar_chart_rounded,
+                                        color: Color(0xFF00E676)),
                                     SizedBox(width: 8),
                                     Text(
                                       'Steps Cadence',
@@ -183,12 +192,15 @@ class DashboardScreen extends ConsumerWidget {
                                 // Live Follow-Up: 60m vs 30m sampling window toggle!
                                 SegmentedButton<int>(
                                   segments: const [
-                                    ButtonSegment(value: 60, label: Text('60m')),
-                                    ButtonSegment(value: 30, label: Text('30m')),
+                                    ButtonSegment(
+                                        value: 60, label: Text('60m')),
+                                    ButtonSegment(
+                                        value: 30, label: Text('30m')),
                                   ],
                                   selected: {dashboard.stepsWindowMinutes},
                                   onSelectionChanged: (newSelection) {
-                                    notifier.setStepsWindowMinutes(newSelection.first);
+                                    notifier.setStepsWindowMinutes(
+                                        newSelection.first);
                                   },
                                   style: SegmentedButton.styleFrom(
                                     visualDensity: VisualDensity.compact,
@@ -199,7 +211,8 @@ class DashboardScreen extends ConsumerWidget {
                             const SizedBox(height: 4),
                             Text(
                               'Bucketed sums over the last ${dashboard.stepsWindowMinutes} minutes',
-                              style: const TextStyle(fontSize: 12, color: Colors.white54),
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.white54),
                             ),
                             const SizedBox(height: 12),
                             StepsChart(
@@ -230,7 +243,8 @@ class DashboardScreen extends ConsumerWidget {
                               children: [
                                 const Row(
                                   children: [
-                                    Icon(Icons.show_chart_rounded, color: Color(0xFFFF5252)),
+                                    Icon(Icons.show_chart_rounded,
+                                        color: Color(0xFFFF5252)),
                                     SizedBox(width: 8),
                                     Text(
                                       'Heart Rate vs. Time',
@@ -245,12 +259,14 @@ class DashboardScreen extends ConsumerWidget {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Text('SMA', style: TextStyle(fontSize: 12)),
+                                    const Text('SMA',
+                                        style: TextStyle(fontSize: 12)),
                                     const SizedBox(width: 4),
                                     Switch(
                                       value: dashboard.isSmoothingEnabled,
                                       activeColor: const Color(0xFFFF5252),
-                                      onChanged: (_) => notifier.toggleSmoothing(),
+                                      onChanged: (_) =>
+                                          notifier.toggleSmoothing(),
                                     ),
                                   ],
                                 ),
@@ -262,12 +278,14 @@ class DashboardScreen extends ConsumerWidget {
                               children: [
                                 const Text(
                                   'Rolling window (LTTB decimation, pan & pinch-zoom)',
-                                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white54),
                                 ),
                                 if (dashboard.isSmoothingEnabled)
                                   const Text(
                                     '5-period SMA Active',
-                                    style: TextStyle(fontSize: 11, color: Color(0xFFFF5252)),
+                                    style: TextStyle(
+                                        fontSize: 11, color: Color(0xFFFF5252)),
                                   ),
                               ],
                             ),

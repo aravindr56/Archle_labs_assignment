@@ -8,7 +8,8 @@ import 'live_health_notifier.dart';
 import 'permissions_provider.dart';
 
 final databaseServiceProvider = Provider<DatabaseService>((ref) {
-  throw UnimplementedError('databaseServiceProvider must be overridden in main()');
+  throw UnimplementedError(
+      'databaseServiceProvider must be overridden in main()');
 });
 
 final healthRepositoryProvider = Provider<HealthRepository>((ref) {

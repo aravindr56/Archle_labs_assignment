@@ -13,7 +13,8 @@ class PermissionsScreen extends ConsumerWidget {
 
     final isGranted = permState.status == HealthPermissionStatus.granted;
     final isDenied = permState.status == HealthPermissionStatus.denied;
-    final isNotSupported = permState.status == HealthPermissionStatus.notSupported;
+    final isNotSupported =
+        permState.status == HealthPermissionStatus.notSupported;
 
     return Scaffold(
       appBar: AppBar(
@@ -34,11 +35,13 @@ class PermissionsScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: Colors.amber.shade900.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.amber.shade700, width: 1.5),
+                    border:
+                        Border.all(color: Colors.amber.shade700, width: 1.5),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.warning_amber_rounded, color: Colors.amber.shade700, size: 28),
+                      Icon(Icons.warning_amber_rounded,
+                          color: Colors.amber.shade700, size: 28),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
@@ -76,7 +79,8 @@ class PermissionsScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: Colors.blueGrey.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.blueGrey.shade400, width: 1.5),
+                    border:
+                        Border.all(color: Colors.blueGrey.shade400, width: 1.5),
                   ),
                   child: const Row(
                     children: [
@@ -108,7 +112,8 @@ class PermissionsScreen extends ConsumerWidget {
 
               _PermissionItemCard(
                 title: 'Heart Rate Record (Read)',
-                description: 'Reads real-time BPM streams and historical samples',
+                description:
+                    'Reads real-time BPM streams and historical samples',
                 icon: Icons.favorite_rounded,
                 status: permState.status,
               ),
@@ -136,8 +141,11 @@ class PermissionsScreen extends ConsumerWidget {
                       onPressed: () => permNotifier.requestPermissions(),
                       icon: const Icon(Icons.security_rounded),
                       label: Text(
-                        isGranted ? 'Permissions Granted' : 'Request Permissions',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        isGranted
+                            ? 'Permissions Granted'
+                            : 'Request Permissions',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 12),

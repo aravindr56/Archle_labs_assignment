@@ -111,16 +111,19 @@ class HealthRepositoryImpl implements HealthRepository {
   Future<int> getTodayStepTotal() => _dbService.getTodayStepTotal();
 
   @override
-  Future<HeartRateRecord?> getLatestHeartRate() => _dbService.getLatestHeartRate();
+  Future<HeartRateRecord?> getLatestHeartRate() =>
+      _dbService.getLatestHeartRate();
 
   @override
-  Future<List<StepRecord>> getRecentSteps({Duration window = const Duration(minutes: 60)}) {
+  Future<List<StepRecord>> getRecentSteps(
+      {Duration window = const Duration(minutes: 60)}) {
     final cutoff = DateTime.now().subtract(window).millisecondsSinceEpoch;
     return _dbService.getRawStepsSince(cutoff);
   }
 
   @override
-  Future<List<HeartRateRecord>> getRecentHeartRates({Duration window = const Duration(minutes: 60)}) {
+  Future<List<HeartRateRecord>> getRecentHeartRates(
+      {Duration window = const Duration(minutes: 60)}) {
     final cutoff = DateTime.now().subtract(window).millisecondsSinceEpoch;
     return _dbService.getRawHeartRateSince(cutoff);
   }
@@ -151,7 +154,8 @@ class HealthRepositoryImpl implements HealthRepository {
   }
 
   @override
-  Future<Map<String, int>> runCompaction() => _dbService.runRetentionCompaction();
+  Future<Map<String, int>> runCompaction() =>
+      _dbService.runRetentionCompaction();
 
   @override
   void dispose() {

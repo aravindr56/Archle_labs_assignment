@@ -40,10 +40,14 @@ class TestMockRepository implements HealthRepository {
   Future<HeartRateRecord?> getLatestHeartRate() async => _hr;
 
   @override
-  Future<List<StepRecord>> getRecentSteps({Duration window = const Duration(minutes: 60)}) async => [];
+  Future<List<StepRecord>> getRecentSteps(
+          {Duration window = const Duration(minutes: 60)}) async =>
+      [];
 
   @override
-  Future<List<HeartRateRecord>> getRecentHeartRates({Duration window = const Duration(minutes: 60)}) async => [];
+  Future<List<HeartRateRecord>> getRecentHeartRates(
+          {Duration window = const Duration(minutes: 60)}) async =>
+      [];
 
   @override
   Future<void> setSimSourceActive(bool active) async {

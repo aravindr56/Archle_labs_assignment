@@ -10,7 +10,8 @@ class MockHealthRepositoryForNotifier implements HealthRepository {
   final _stepsCtrl = StreamController<StepRecord>.broadcast();
   final _hrCtrl = StreamController<HeartRateRecord>.broadcast();
   int initialSteps = 1000;
-  HeartRateRecord? initialHr = const HeartRateRecord(timestamp: 1700000000000, bpm: 72);
+  HeartRateRecord? initialHr =
+      const HeartRateRecord(timestamp: 1700000000000, bpm: 72);
 
   @override
   Stream<StepRecord> get stepsStream => _stepsCtrl.stream;
@@ -25,16 +26,22 @@ class MockHealthRepositoryForNotifier implements HealthRepository {
   Future<HeartRateRecord?> getLatestHeartRate() async => initialHr;
 
   @override
-  Future<List<StepRecord>> getRecentSteps({Duration window = const Duration(minutes: 60)}) async => [];
+  Future<List<StepRecord>> getRecentSteps(
+          {Duration window = const Duration(minutes: 60)}) async =>
+      [];
 
   @override
-  Future<List<HeartRateRecord>> getRecentHeartRates({Duration window = const Duration(minutes: 60)}) async => [];
+  Future<List<HeartRateRecord>> getRecentHeartRates(
+          {Duration window = const Duration(minutes: 60)}) async =>
+      [];
 
   @override
-  Future<HealthPermissionStatus> checkPermissions() async => HealthPermissionStatus.granted;
+  Future<HealthPermissionStatus> checkPermissions() async =>
+      HealthPermissionStatus.granted;
 
   @override
-  Future<HealthPermissionStatus> requestPermissions() async => HealthPermissionStatus.granted;
+  Future<HealthPermissionStatus> requestPermissions() async =>
+      HealthPermissionStatus.granted;
 
   @override
   Future<void> startListening() async {}
@@ -82,7 +89,8 @@ void main() {
       expect(notifier.state.latestHeartRate?.bpm, equals(72));
     });
 
-    test('coalesces rapid stream updates and updates state after flush', () async {
+    test('coalesces rapid stream updates and updates state after flush',
+        () async {
       await Future.delayed(const Duration(milliseconds: 50));
 
       final now = DateTime.now().millisecondsSinceEpoch;

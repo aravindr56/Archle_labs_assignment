@@ -44,11 +44,13 @@ class DebugScreen extends ConsumerWidget {
                 children: [
                   const Row(
                     children: [
-                      Icon(Icons.verified_user_rounded, color: Color(0xFF00E676)),
+                      Icon(Icons.verified_user_rounded,
+                          color: Color(0xFF00E676)),
                       SizedBox(width: 8),
                       Text(
                         'Anti-Plagiarism SALT Ledger',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ],
                   ),
@@ -81,11 +83,13 @@ class DebugScreen extends ConsumerWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.check_circle, size: 14, color: Color(0xFF00E676)),
+                      const Icon(Icons.check_circle,
+                          size: 14, color: Color(0xFF00E676)),
                       const SizedBox(width: 6),
                       Text(
                         'Integrity Verified: ${AppConfig.verifyIntegrity()}',
-                        style: const TextStyle(fontSize: 12, color: Color(0xFF00E676)),
+                        style: const TextStyle(
+                            fontSize: 12, color: Color(0xFF00E676)),
                       ),
                     ],
                   ),
@@ -151,7 +155,9 @@ class DebugScreen extends ConsumerWidget {
                       await notifier.seedSyntheticData();
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Synthetic dataset injected into SQLite!')),
+                          const SnackBar(
+                              content: Text(
+                                  'Synthetic dataset injected into SQLite!')),
                         );
                       }
                     },

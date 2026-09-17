@@ -48,9 +48,11 @@ class _StepsChartState extends State<StepsChart> {
             _baseOffset = _viewport.panOffsetX;
           },
           onScaleUpdate: (details) {
-            final newScale = (_baseScale * details.horizontalScale).clamp(1.0, 4.0);
+            final newScale =
+                (_baseScale * details.horizontalScale).clamp(1.0, 4.0);
             final maxPan = (newScale - 1.0) * constraints.maxWidth;
-            final newPan = (_baseOffset + details.focalPointDelta.dx).clamp(-maxPan, 0.0);
+            final newPan =
+                (_baseOffset + details.focalPointDelta.dx).clamp(-maxPan, 0.0);
 
             setState(() {
               _viewport = _viewport.copyWith(
@@ -68,7 +70,8 @@ class _StepsChartState extends State<StepsChart> {
               _viewport,
             );
             setState(() {
-              _viewport = _viewport.copyWith(selectedTimestamp: nearest?.timestamp);
+              _viewport =
+                  _viewport.copyWith(selectedTimestamp: nearest?.timestamp);
             });
           },
           onTapUp: (_) {
@@ -94,7 +97,8 @@ class _StepsChartState extends State<StepsChart> {
     );
   }
 
-  List<StepRecord> _aggregateIntoBuckets(List<StepRecord> rawRecords, int windowMins) {
+  List<StepRecord> _aggregateIntoBuckets(
+      List<StepRecord> rawRecords, int windowMins) {
     final nowMs = DateTime.now().millisecondsSinceEpoch;
     const bucketDurationMs = 60 * 1000; // 1-minute buckets
     final totalBuckets = windowMins;
@@ -144,8 +148,7 @@ class StepsCustomPainter extends CustomPainter {
   final List<StepRecord> buckets;
   final ChartViewport viewport;
 
-  static final Paint _barPaint = Paint()
-    ..style = PaintingStyle.fill;
+  static final Paint _barPaint = Paint()..style = PaintingStyle.fill;
 
   static final Paint _gridPaint = Paint()
     ..color = const Color(0x1FFFFFFF)
@@ -201,7 +204,9 @@ class StepsCustomPainter extends CustomPainter {
 
     for (int i = 0; i < buckets.length; i++) {
       final b = buckets[i];
-      final double x = (i * barSlotWidth) + viewport.panOffsetX + (barSlotWidth - barWidth) / 2;
+      final double x = (i * barSlotWidth) +
+          viewport.panOffsetX +
+          (barSlotWidth - barWidth) / 2;
       final double barH = (b.count / maxCount) * chartHeight;
       final double y = topPadding + (chartHeight - barH);
 
@@ -231,8 +236,8 @@ class StepsCustomPainter extends CustomPainter {
 
     // Draw Tooltip
     if (selectedBucket != null && selectedX >= 0 && selectedX <= width) {
-      final timeStr = DateFormat('HH:mm')
-          .format(DateTime.fromMillisecondsSinceEpoch(selectedBucket.timestamp));
+      final timeStr = DateFormat('HH:mm').format(
+          DateTime.fromMillisecondsSinceEpoch(selectedBucket.timestamp));
       final textSpan = TextSpan(
         text: '${selectedBucket.count} steps\nat $timeStr',
         style: const TextStyle(
@@ -252,7 +257,8 @@ class StepsCustomPainter extends CustomPainter {
       final tooltipWidth = textPainter.width + pad * 2;
       final tooltipHeight = textPainter.height + pad * 2;
 
-      double boxX = (selectedX - tooltipWidth / 2).clamp(4.0, width - tooltipWidth - 4.0);
+      double boxX =
+          (selectedX - tooltipWidth / 2).clamp(4.0, width - tooltipWidth - 4.0);
       double boxY = max(4.0, selectedY - tooltipHeight - 8.0);
 
       final rrect = RRect.fromRectAndRadius(

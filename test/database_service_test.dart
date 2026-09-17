@@ -49,14 +49,17 @@ void main() {
       await dbService.insertStepsBatch([
         StepRecord(timestamp: startOfDay.millisecondsSinceEpoch, count: 500),
         StepRecord(
-            timestamp: startOfDay.add(const Duration(hours: 2)).millisecondsSinceEpoch,
+            timestamp:
+                startOfDay.add(const Duration(hours: 2)).millisecondsSinceEpoch,
             count: 750),
       ]);
 
       await dbService.insertHeartRateBatch([
         HeartRateRecord(timestamp: startOfDay.millisecondsSinceEpoch, bpm: 68),
         HeartRateRecord(
-            timestamp: startOfDay.add(const Duration(minutes: 30)).millisecondsSinceEpoch,
+            timestamp: startOfDay
+                .add(const Duration(minutes: 30))
+                .millisecondsSinceEpoch,
             bpm: 82),
       ]);
 
@@ -75,14 +78,16 @@ void main() {
       final bpms = [60, 65, 70, 75, 80, 85, 90, 95, 100, 110];
       for (int i = 0; i < bpms.length; i++) {
         hrList.add(HeartRateRecord(
-          timestamp: testHour.add(Duration(minutes: i * 5)).millisecondsSinceEpoch,
+          timestamp:
+              testHour.add(Duration(minutes: i * 5)).millisecondsSinceEpoch,
           bpm: bpms[i],
         ));
       }
       await dbService.insertHeartRateBatch(hrList);
 
       await dbService.insertStep(StepRecord(
-        timestamp: testHour.add(const Duration(minutes: 15)).millisecondsSinceEpoch,
+        timestamp:
+            testHour.add(const Duration(minutes: 15)).millisecondsSinceEpoch,
         count: 340,
       ));
 
@@ -100,14 +105,19 @@ void main() {
       final now = DateTime(2026, 9, 17, 12, 0, 0);
 
       // Raw record 8 days old (should be purged)
-      final oldRawTs = now.subtract(const Duration(days: 8)).millisecondsSinceEpoch;
+      final oldRawTs =
+          now.subtract(const Duration(days: 8)).millisecondsSinceEpoch;
       await dbService.insertStep(StepRecord(timestamp: oldRawTs, count: 50));
-      await dbService.insertHeartRate(HeartRateRecord(timestamp: oldRawTs, bpm: 70));
+      await dbService
+          .insertHeartRate(HeartRateRecord(timestamp: oldRawTs, bpm: 70));
 
       // Raw record 2 days old (should be kept)
-      final recentRawTs = now.subtract(const Duration(days: 2)).millisecondsSinceEpoch;
-      await dbService.insertStep(StepRecord(timestamp: recentRawTs, count: 100));
-      await dbService.insertHeartRate(HeartRateRecord(timestamp: recentRawTs, bpm: 72));
+      final recentRawTs =
+          now.subtract(const Duration(days: 2)).millisecondsSinceEpoch;
+      await dbService
+          .insertStep(StepRecord(timestamp: recentRawTs, count: 100));
+      await dbService
+          .insertHeartRate(HeartRateRecord(timestamp: recentRawTs, bpm: 72));
 
       // Aggregate 35 days old (should be purged)
       await dbService.database.insert('agg_daily', {

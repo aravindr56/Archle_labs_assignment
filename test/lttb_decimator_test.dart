@@ -4,7 +4,8 @@ import 'package:healthconnect_dashboard/presentation/charts/lttb_decimator.dart'
 
 void main() {
   group('LttbDecimator & MovingAverageFilter Tests', () {
-    test('LTTB downsamples large dataset (1,000 points) to exact threshold', () {
+    test('LTTB downsamples large dataset (1,000 points) to exact threshold',
+        () {
       final List<HeartRateRecord> largeData = [];
       const start = 1700000000000;
       for (int i = 0; i < 1000; i++) {

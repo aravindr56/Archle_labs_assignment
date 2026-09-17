@@ -15,7 +15,8 @@ void main() {
     });
 
     test('package name and initial commit hash are not empty', () {
-      expect(AppConfig.packageName, equals('com.archlelabs.healthconnect_dashboard'));
+      expect(AppConfig.packageName,
+          equals('com.archlelabs.healthconnect_dashboard'));
       expect(AppConfig.firstGitCommitHash, hasLength(40));
       expect(AppConfig.salt, hasLength(64));
     });

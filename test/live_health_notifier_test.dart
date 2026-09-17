@@ -68,7 +68,7 @@ void main() {
 
     setUp(() {
       repo = MockHealthRepositoryForNotifier();
-      notifier = LiveHealthNotifier(repo);
+      notifier = LiveHealthNotifier(repo, enablePeriodicRefresh: false);
     });
 
     tearDown(() {

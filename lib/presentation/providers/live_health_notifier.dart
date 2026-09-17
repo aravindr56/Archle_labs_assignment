@@ -61,15 +61,21 @@ class LiveHealthNotifier extends StateNotifier<DashboardState> {
   final List<StepRecord> _pendingSteps = [];
   final List<HeartRateRecord> _pendingHr = [];
   Timer? _coalesceTimer;
+  final bool enablePeriodicRefresh;
 
-  LiveHealthNotifier(this._repository) : super(const DashboardState(isLoading: true)) {
+  LiveHealthNotifier(
+    this._repository, {
+    this.enablePeriodicRefresh = true,
+  }) : super(const DashboardState(isLoading: true)) {
     _init();
   }
 
   Future<void> _init() async {
     await refreshData();
     _subscribe();
-    _startPeriodicRefresh();
+    if (enablePeriodicRefresh) {
+      _startPeriodicRefresh();
+    }
   }
 
   void _subscribe() {
@@ -191,7 +197,6 @@ class LiveHealthNotifier extends StateNotifier<DashboardState> {
 
   Timer? _periodicRefreshTimer;
   void _startPeriodicRefresh() {
-    // Keep window clean every 30 seconds
     _periodicRefreshTimer = Timer.periodic(const Duration(seconds: 30), (_) {
       refreshData();
     });

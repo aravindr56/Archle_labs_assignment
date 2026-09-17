@@ -1,11 +1,11 @@
 package com.archlelabs.healthconnect_dashboard
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
+import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.StepsRecord
@@ -13,7 +13,7 @@ import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.lifecycleScope
-import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
@@ -22,11 +22,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     private val METHOD_CHANNEL = "com.archlelabs.healthconnect/methods"
     private val EVENT_CHANNEL = "com.archlelabs.healthconnect/events"
 
@@ -196,31 +195,34 @@ class MainActivity : FlutterActivity() {
                     changesToken = changesResponse.nextChangesToken
 
                     val mainHandler = Handler(Looper.getMainLooper())
-                    for (record in changesResponse.upsertionRecords) {
-                        when (record) {
-                            is StepsRecord -> {
-                                val data = mapOf(
-                                    "type" to "steps",
-                                    "ts" to record.startTime.toEpochMilli(),
-                                    "count" to record.count
-                                )
-                                mainHandler.post { eventSink?.success(data) }
-                            }
-
-                            is HeartRateRecord -> {
-                                for (sample in record.samples) {
+                    for (change in changesResponse.changes) {
+                        if (change is UpsertionChange) {
+                            val record = change.record
+                            when (record) {
+                                is StepsRecord -> {
                                     val data = mapOf(
-                                        "type" to "heartRate",
-                                        "ts" to sample.time.toEpochMilli(),
-                                        "bpm" to sample.beatsPerMinute.toInt()
+                                        "type" to "steps",
+                                        "ts" to record.startTime.toEpochMilli(),
+                                        "count" to record.count
                                     )
                                     mainHandler.post { eventSink?.success(data) }
+                                }
+
+                                is HeartRateRecord -> {
+                                    for (sample in record.samples) {
+                                        val data = mapOf(
+                                            "type" to "heartRate",
+                                            "ts" to sample.time.toEpochMilli(),
+                                            "bpm" to sample.beatsPerMinute.toInt()
+                                        )
+                                        mainHandler.post { eventSink?.success(data) }
+                                    }
                                 }
                             }
                         }
                     }
 
-                    // Poll cadence: 5 seconds (well within the <= 10s latency requirement)
+                    // Poll cadence: 5 seconds (well within <= 10s latency target)
                     delay(5000)
                 }
             } catch (e: Exception) {

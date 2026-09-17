@@ -45,6 +45,10 @@ class NativeHealthConnectSource implements HealthDataSource {
   @override
   Future<HealthPermissionStatus> requestPermissions() async {
     try {
+      final status = await _methodChannel.invokeMethod<String>('getSdkStatus');
+      if (status != 'available') {
+        return HealthPermissionStatus.notSupported;
+      }
       final res = await _methodChannel
           .invokeMapMethod<String, dynamic>('requestPermissions');
       final allGranted = res?['allGranted'] as bool? ?? false;
@@ -52,8 +56,14 @@ class NativeHealthConnectSource implements HealthDataSource {
           ? HealthPermissionStatus.granted
           : HealthPermissionStatus.denied;
     } catch (_) {
-      return HealthPermissionStatus.denied;
+      return HealthPermissionStatus.notSupported;
     }
+  }
+
+  static Future<void> openPlayStore() async {
+    try {
+      await _methodChannel.invokeMethod('openHealthConnectPlayStore');
+    } catch (_) {}
   }
 
   @override

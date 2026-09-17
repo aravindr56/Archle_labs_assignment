@@ -65,8 +65,11 @@ class DashboardScreen extends ConsumerWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   if (dashboard.isSimSourceActive)
                     Container(
@@ -79,6 +82,7 @@ class DashboardScreen extends ConsumerWidget {
                             Border.all(color: Colors.amber.shade600, width: 1),
                       ),
                       child: const Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.bolt, size: 14, color: Colors.amberAccent),
                           SizedBox(width: 4),
@@ -92,10 +96,11 @@ class DashboardScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                    )
-                  else
-                    const SizedBox.shrink(),
-                  const PerformanceHud(),
+                    ),
+                  const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: PerformanceHud(),
+                  ),
                 ],
               ),
             ),
@@ -175,35 +180,52 @@ class DashboardScreen extends ConsumerWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Row(
-                                  children: [
-                                    Icon(Icons.bar_chart_rounded,
-                                        color: Color(0xFF00E676)),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Steps Cadence',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                const Expanded(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.bar_chart_rounded,
+                                          color: Color(0xFF00E676), size: 20),
+                                      SizedBox(width: 8),
+                                      Flexible(
+                                        child: Text(
+                                          'Steps Cadence',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                                const SizedBox(width: 8),
                                 // Live Follow-Up: 60m vs 30m sampling window toggle!
-                                SegmentedButton<int>(
-                                  segments: const [
-                                    ButtonSegment(
-                                        value: 60, label: Text('60m')),
-                                    ButtonSegment(
-                                        value: 30, label: Text('30m')),
-                                  ],
-                                  selected: {dashboard.stepsWindowMinutes},
-                                  onSelectionChanged: (newSelection) {
-                                    notifier.setStepsWindowMinutes(
-                                        newSelection.first);
-                                  },
-                                  style: SegmentedButton.styleFrom(
-                                    visualDensity: VisualDensity.compact,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white10,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.all(2),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      _WindowTogglePill(
+                                        label: '60m',
+                                        isSelected:
+                                            dashboard.stepsWindowMinutes == 60,
+                                        onTap: () => notifier
+                                            .setStepsWindowMinutes(60),
+                                      ),
+                                      _WindowTogglePill(
+                                        label: '30m',
+                                        isSelected:
+                                            dashboard.stepsWindowMinutes == 30,
+                                        onTap: () => notifier
+                                            .setStepsWindowMinutes(30),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -241,43 +263,60 @@ class DashboardScreen extends ConsumerWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Row(
-                                  children: [
-                                    Icon(Icons.show_chart_rounded,
-                                        color: Color(0xFFFF5252)),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Heart Rate vs. Time',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                const Expanded(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.show_chart_rounded,
+                                          color: Color(0xFFFF5252), size: 20),
+                                      SizedBox(width: 8),
+                                      Flexible(
+                                        child: Text(
+                                          'Heart Rate vs. Time',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                                const SizedBox(width: 8),
                                 // Live Follow-Up: Moving Average Smoothing Toggle!
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const Text('SMA',
-                                        style: TextStyle(fontSize: 12)),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.white70)),
                                     const SizedBox(width: 4),
-                                    Switch(
-                                      value: dashboard.isSmoothingEnabled,
-                                      activeColor: const Color(0xFFFF5252),
-                                      onChanged: (_) =>
-                                          notifier.toggleSmoothing(),
+                                    SizedBox(
+                                      height: 28,
+                                      child: Switch(
+                                        value: dashboard.isSmoothingEnabled,
+                                        activeColor: const Color(0xFFFF5252),
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        onChanged: (_) =>
+                                            notifier.toggleSmoothing(),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 8,
+                              runSpacing: 2,
                               children: [
                                 const Text(
-                                  'Rolling window (LTTB decimation, pan & pinch-zoom)',
+                                  'Rolling window (LTTB decimation, pan & zoom)',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white54),
                                 ),
@@ -303,6 +342,40 @@ class DashboardScreen extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WindowTogglePill extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _WindowTogglePill({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF00E676) : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: isSelected ? Colors.black : Colors.white70,
+          ),
         ),
       ),
     );

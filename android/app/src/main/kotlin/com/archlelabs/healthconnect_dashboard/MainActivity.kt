@@ -57,12 +57,17 @@ class MainActivity : FlutterFragmentActivity() {
 
     private var pendingPermissionResult: MethodChannel.Result? = null
 
+    private fun getClient(): HealthConnectClient? {
+        if (healthConnectClient == null && HealthConnectClient.getSdkStatus(this) == HealthConnectClient.SDK_AVAILABLE) {
+            healthConnectClient = HealthConnectClient.getOrCreate(this)
+        }
+        return healthConnectClient
+    }
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        if (HealthConnectClient.getSdkStatus(this) == HealthConnectClient.SDK_AVAILABLE) {
-            healthConnectClient = HealthConnectClient.getOrCreate(this)
-        }
+        getClient()
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, METHOD_CHANNEL)
             .setMethodCallHandler { call, result ->
@@ -78,8 +83,31 @@ class MainActivity : FlutterFragmentActivity() {
                         result.success(statusStr)
                     }
 
+                    "openHealthConnectPlayStore" -> {
+                        try {
+                            val uri = android.net.Uri.parse("market://details?id=com.google.android.apps.healthdata&url=healthconnect%3A%2F%2Fonboarding")
+                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, uri).apply {
+                                setPackage("com.android.vending")
+                                flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
+                            startActivity(intent)
+                            result.success(true)
+                        } catch (e: Exception) {
+                            try {
+                                val webUri = android.net.Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata")
+                                val webIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, webUri).apply {
+                                    flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+                                }
+                                startActivity(webIntent)
+                                result.success(true)
+                            } catch (e2: Exception) {
+                                result.error("PLAY_STORE_ERROR", e2.message, null)
+                            }
+                        }
+                    }
+
                     "checkPermissions" -> {
-                        val client = healthConnectClient
+                        val client = getClient()
                         if (client == null) {
                             result.success(mapOf("steps" to false, "heartRate" to false, "allGranted" to false))
                             return@setMethodCallHandler
@@ -101,12 +129,17 @@ class MainActivity : FlutterFragmentActivity() {
                     }
 
                     "requestPermissions" -> {
+                        val status = HealthConnectClient.getSdkStatus(this)
+                        if (status != HealthConnectClient.SDK_AVAILABLE) {
+                            result.success(mapOf("steps" to false, "heartRate" to false, "allGranted" to false))
+                            return@setMethodCallHandler
+                        }
                         pendingPermissionResult = result
                         requestPermissionLauncher.launch(PERMISSIONS)
                     }
 
                     "readRecentData" -> {
-                        val client = healthConnectClient
+                        val client = getClient()
                         if (client == null) {
                             result.success(emptyMap<String, Any>())
                             return@setMethodCallHandler
@@ -173,7 +206,7 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun startChangesPolling() {
-        val client = healthConnectClient ?: return
+        val client = getClient() ?: return
         pollingJob?.cancel()
 
         pollingJob = lifecycleScope.launch(Dispatchers.IO) {

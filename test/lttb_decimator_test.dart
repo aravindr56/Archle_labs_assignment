@@ -6,7 +6,7 @@ void main() {
   group('LttbDecimator & MovingAverageFilter Tests', () {
     test('LTTB downsamples large dataset (1,000 points) to exact threshold', () {
       final List<HeartRateRecord> largeData = [];
-      final start = 1700000000000;
+      const start = 1700000000000;
       for (int i = 0; i < 1000; i++) {
         final bpm = 60 + (i % 80);
         largeData.add(HeartRateRecord(timestamp: start + (i * 1000), bpm: bpm));
@@ -21,7 +21,7 @@ void main() {
     });
 
     test('LTTB returns original list when count is less than threshold', () {
-      final smallData = [
+      const smallData = [
         HeartRateRecord(timestamp: 1000, bpm: 70),
         HeartRateRecord(timestamp: 2000, bpm: 75),
       ];
@@ -31,7 +31,7 @@ void main() {
     });
 
     test('MovingAverageFilter smooths heart rate numbers properly', () {
-      final data = [
+      const data = [
         HeartRateRecord(timestamp: 1000, bpm: 60),
         HeartRateRecord(timestamp: 2000, bpm: 80),
         HeartRateRecord(timestamp: 3000, bpm: 100),

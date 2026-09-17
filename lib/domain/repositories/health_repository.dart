@@ -1,4 +1,3 @@
-import '../models/aggregates.dart';
 import '../models/heart_rate_record.dart';
 import '../models/step_record.dart';
 import '../sources/health_data_source.dart';

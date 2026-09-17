@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// Manages horizontal pan, pinch-zoom scale, and touch inspection.
 class ChartViewport {
   final double scaleX;

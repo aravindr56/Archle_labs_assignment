@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import '../../domain/models/heart_rate_record.dart';
 import 'chart_viewport.dart';
 import 'lttb_decimator.dart';
@@ -179,7 +179,6 @@ class HeartRateCustomPainter extends CustomPainter {
   // Reusable paths
   static final Path _linePath = Path();
   static final Path _fillPath = Path();
-  static final Path _tooltipPath = Path();
 
   HeartRateCustomPainter({
     required this.records,

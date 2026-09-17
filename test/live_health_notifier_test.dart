@@ -10,7 +10,7 @@ class MockHealthRepositoryForNotifier implements HealthRepository {
   final _stepsCtrl = StreamController<StepRecord>.broadcast();
   final _hrCtrl = StreamController<HeartRateRecord>.broadcast();
   int initialSteps = 1000;
-  HeartRateRecord? initialHr = HeartRateRecord(timestamp: 1700000000000, bpm: 72);
+  HeartRateRecord? initialHr = const HeartRateRecord(timestamp: 1700000000000, bpm: 72);
 
   @override
   Stream<StepRecord> get stepsStream => _stepsCtrl.stream;

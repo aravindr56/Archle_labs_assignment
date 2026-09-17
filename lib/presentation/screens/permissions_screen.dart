@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/sources/health_data_source.dart';
 import '../providers/app_providers.dart';
-import '../providers/permissions_provider.dart';
 
 class PermissionsScreen extends ConsumerWidget {
   const PermissionsScreen({super.key});

@@ -9,7 +9,7 @@ void main() {
   group('Chart Rendering & Golden Tests', () {
     testWidgets('renders HeartRateChart with fixed synthetic dataset',
         (WidgetTester tester) async {
-      final now = 1700000000000;
+      const now = 1700000000000;
       final fixedHrRecords = List.generate(
         60,
         (i) => HeartRateRecord(
